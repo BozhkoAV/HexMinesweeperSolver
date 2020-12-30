@@ -68,7 +68,7 @@ class Solver (width: Int, height: Int, bombs: Int) {
         println("Ход: $currentCoordinate") // Для проверки
         board.uncover(currentCoordinate)
         val list = chanceBoard.createChanceBoard(board.getBoard())
-        println("Флаги ${chanceBoard.getListOfFlag()}")  // Для проверки
+        //println("Флаги ${chanceBoard.getListOfFlag()}")  // Для проверки
         if (chanceBoard.getListOfFlag().size == boardBombs) {
             board.state = "win"
             var i = 0

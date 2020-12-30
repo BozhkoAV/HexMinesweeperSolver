@@ -38,6 +38,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
         updateSolverCells()
         val list = setFlags()
         uncoverNotMinesCells()
+        chanceReset()
         findChance()
         return list
     }
@@ -108,16 +109,30 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
                     for (around in neighbors) {
                         if (!chanceBoard[around]!!.isChecked() && chanceBoard[around]!!.getChance() >= 0.0 &&
                             !chanceBoard[around]!!.isFlag()) {
-                            val previousChance = chanceBoard[around]!!.getChance()
-                            val chance = 1.0 / (neighbors.size - cell.flagsAround).toDouble()
-                            if (previousChance > 0.0) {
-                                chanceBoard[around]!!.setChance(1.0 - previousChance * chance)
-                            } else {
-                                chanceBoard[around]!!.setChance(chance)
+                            val calcCount = chanceBoard[around]!!.probabilityList.size
+                            val chance = (cell.getValue() - cell.flagsAround).toDouble() /
+                                    (neighbors.size - cell.flagsAround).toDouble()
+                            chanceBoard[around]!!.probabilityList.add(chance)
+                            var probability = 1.0
+                            for (element in chanceBoard[around]!!.probabilityList) {
+                                probability *= (1.0 - element)
+                            }
+                            chanceBoard[around]!!.setChance(1.0 - probability)
+                            if (calcCount == 0) {
+                                chanceBoard[around]!!.resetProbability()
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun chanceReset() {
+        for ((_, cell) in chanceBoard) {
+            if (cell.isChecked() && cell.getChance() >= 0.0 && !cell.isFlag()) {
+                cell.resetProbability()
+                cell.probabilityList.clear()
             }
         }
     }
