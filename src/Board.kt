@@ -17,6 +17,7 @@ class Board (width: Int, height: Int, bombs: Int) {
 
     private fun createBoard(width: Int, height: Int, bombs: Int) {
         require(bombs <= width * height) { "Слишком много мин для данного поля" }
+        require(bombs > 0) { "Мин должно быть положительное число" }
         for (i in 0 until width) {
             for (j in 0 until height) {
                 gameBoard[i to j] = Cell()

@@ -6,7 +6,6 @@ class SolverCell (coordinate: Pair<Int, Int>, private var check: Boolean) {
     var uncheckedNeighbours = 0
     var flagsAround = 0
     private var chance = 0.0
-    private var probabilityRecount = true
     val probabilityList = mutableListOf<Double>()
 
     fun getCoordinate() = solverCellCoordinate
@@ -42,9 +41,5 @@ class SolverCell (coordinate: Pair<Int, Int>, private var check: Boolean) {
     fun setNotBomb() {
         chance = -0.01
         notBomb = true
-    }
-
-    fun resetProbability() {
-        probabilityRecount = !probabilityRecount
     }
 }

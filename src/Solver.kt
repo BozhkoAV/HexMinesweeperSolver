@@ -12,12 +12,10 @@ class Solver (width: Int, height: Int, bombs: Int) {
         while (board.state == "playing") {
             play()
             if (board.state == "lose") {
-                //chanceBoard.print()
                 println("Поражение")
                 println()
             }
             if (board.state == "win") {
-                //chanceBoard.print()
                 println("Победа")
                 println()
             }

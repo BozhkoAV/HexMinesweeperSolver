@@ -38,7 +38,6 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
         updateSolverCells()
         val list = setFlags()
         openNotBombsCells()
-        chanceReset()
         findChance()
         return list
     }
@@ -71,7 +70,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
                 val neighbors = getCoordinatesAround(i to j)
                 if (cell.getValue() > 0 && cell.getValue() == cell.uncheckedNeighbours) {
                     for (around in neighbors) {
-                        if (isBelongBoard(around) && !chanceBoard[around]!!.isChecked()) {
+                        if (!chanceBoard[around]!!.isChecked()) {
                             chanceBoard[around]!!.setFlag()
                             list.add(around)
                         }
@@ -94,7 +93,6 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
                             chanceBoard[around]!!.setNotBomb()
                         }
                     }
-                    updateSolverCells()
                 }
             }
         }
@@ -109,7 +107,6 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
                     for (around in neighbors) {
                         if (!chanceBoard[around]!!.isChecked() && chanceBoard[around]!!.getChance() >= 0.0 &&
                             !chanceBoard[around]!!.isFlag()) {
-                            val calcCount = chanceBoard[around]!!.probabilityList.size
                             val chance = (cell.getValue() - cell.flagsAround).toDouble() /
                                     (neighbors.size - cell.flagsAround).toDouble()
                             chanceBoard[around]!!.probabilityList.add(chance)
@@ -118,21 +115,9 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
                                 probability *= (1.0 - element)
                             }
                             chanceBoard[around]!!.setChance(1.0 - probability)
-                            if (calcCount == 0) {
-                                chanceBoard[around]!!.resetProbability()
-                            }
                         }
                     }
                 }
-            }
-        }
-    }
-
-    private fun chanceReset() {
-        for ((_, cell) in chanceBoard) {
-            if (cell.isChecked() && cell.getChance() >= 0.0 && !cell.isFlag()) {
-                cell.resetProbability()
-                cell.probabilityList.clear()
             }
         }
     }
