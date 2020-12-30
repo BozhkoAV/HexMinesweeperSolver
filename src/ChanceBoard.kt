@@ -14,7 +14,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
         height = maxSecond
     }
 
-    fun createChanceBoard(board: MutableMap<Pair<Int, Int>, Int>) : List<Pair<Int, Int>> {
+    fun updateChanceBoard(board: MutableMap<Pair<Int, Int>, Int>) : List<Pair<Int, Int>> {
         val result = mutableMapOf<Pair<Int, Int>, SolverCell>()
         for (i in 0 until width) {
             for (j in 0 until height) {
@@ -37,7 +37,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
     private fun updateChances(): List<Pair<Int, Int>> {
         updateSolverCells()
         val list = setFlags()
-        uncoverNotMinesCells()
+        openNotBombsCells()
         chanceReset()
         findChance()
         return list
@@ -83,7 +83,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
         return list
     }
 
-    private fun uncoverNotMinesCells() {
+    private fun openNotBombsCells() {
         for (i in 0 until width) {
             for (j in 0 until height) {
                 val cell = chanceBoard[i to j]!!

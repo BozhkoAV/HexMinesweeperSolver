@@ -66,15 +66,11 @@ class Solver (width: Int, height: Int, bombs: Int) {
             return false
         }
         println("Ход: $currentCoordinate") // Для проверки
-        board.uncover(currentCoordinate)
-        val list = chanceBoard.createChanceBoard(board.getBoard())
+        board.openCells(currentCoordinate)
+        val list = chanceBoard.updateChanceBoard(board.getBoard())
         //println("Флаги ${chanceBoard.getListOfFlag()}")  // Для проверки
         if (chanceBoard.getListOfFlag().size == boardBombs) {
             board.state = "win"
-            var i = 0
-            for((_, cell) in chanceBoard.chanceBoard) {
-                if (!cell.isChecked() && !cell.isFlag()) i++
-            }
         }
         for (coordinate in list) {
             board.gameBoard[coordinate]!!.placeFlag()

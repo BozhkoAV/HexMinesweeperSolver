@@ -8,14 +8,14 @@ class Board (width: Int, height: Int, bombs: Int) {
     var state = "playing"
 
     init {
-        generateBoard(width, height, bombs)
+        createBoard(width, height, bombs)
     }
 
     private fun getWidth() = boardWidth
 
     private fun getHeight() = boardHeight
 
-    private fun generateBoard(width: Int, height: Int, bombs: Int) {
+    private fun createBoard(width: Int, height: Int, bombs: Int) {
         require(bombs <= width * height) { "Слишком много мин для данного поля" }
         for (i in 0 until width) {
             for (j in 0 until height) {
@@ -48,7 +48,7 @@ class Board (width: Int, height: Int, bombs: Int) {
         }
     }
 
-    fun uncover(coordinate: Pair<Int, Int>) {
+    fun openCells(coordinate: Pair<Int, Int>) {
         gameBoard[coordinate]!!.check = true
         if (gameBoard[coordinate]!!.isBomb()) {
             state = "lose"
@@ -59,7 +59,7 @@ class Board (width: Int, height: Int, bombs: Int) {
                 val neighbors = getCoordinatesAround(coordinate)
                 for (around in neighbors) {
                     if (!gameBoard[around]!!.isBomb() && !gameBoard[around]!!.check) {
-                        uncover(around)
+                        openCells(around)
                     }
                 }
             }
