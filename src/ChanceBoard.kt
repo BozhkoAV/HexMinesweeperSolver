@@ -16,11 +16,13 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
 
     fun updateChanceBoard(board: MutableMap<Pair<Int, Int>, Int>) : List<Pair<Int, Int>> {
         val result = mutableMapOf<Pair<Int, Int>, SolverCell>()
+        var count = 0
         for (i in 0 until width) {
             for (j in 0 until height) {
                 if (board[i to j] == -1) {
                     val cell = SolverCell(i to j, false)
                     result[i to j] = cell
+                    count++
                 } else {
                     if(board[i to j]!! >= 0) {
                         val solverCell = SolverCell(i to j, true)
@@ -30,6 +32,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
                 }
             }
         }
+        //println("Осталость $count")
         chanceBoard = result
         return updateChances()
     }
