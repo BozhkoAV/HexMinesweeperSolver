@@ -5,7 +5,7 @@ class Solver (width: Int, height: Int, bombs: Int) {
     private val boardBombs = bombs
     private var firstMove = true // первый ход или нет
     private val chanceBoard = ChanceBoard(board.getBoard())
-    private lateinit var testChanceBoard: MutableMap<Pair<Int, Int>, SolverCell>
+    private lateinit var testChanceBoard: MutableMap<Pair<Int, Int>, SolverCell> // для проверки
 
     fun start() {
         while (board.state == "playing") {
@@ -47,10 +47,7 @@ class Solver (width: Int, height: Int, bombs: Int) {
         return coordinate
     }
 
-    private fun move(currentCoordinate: Pair<Int, Int>): Boolean {
-        if (board.gameBoard[currentCoordinate]!!.check || board.gameBoard[currentCoordinate]!!.isFlag()) {
-            return false
-        }
+    private fun move(currentCoordinate: Pair<Int, Int>){
         println("Ход: $currentCoordinate") // Для проверки
         board.openCells(currentCoordinate)
         val list = chanceBoard.updateChanceBoard(board.getBoard())
@@ -68,7 +65,6 @@ class Solver (width: Int, height: Int, bombs: Int) {
             //chanceBoard.print(testChanceBoard) // Для проверки
             testChanceBoard = chanceBoard.getCurrentChanceBoard() // Для проверки
         }
-        return true
     }
 
     private fun randomMove() = move((0 until boardWidth).random() to (0 until boardHeight).random())
