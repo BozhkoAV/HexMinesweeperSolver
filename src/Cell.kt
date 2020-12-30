@@ -11,8 +11,6 @@ class Cell {
         value = -1
     }
 
-    fun isFlag() = flag
-
     fun placeFlag() {
         flag = true
     }

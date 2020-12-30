@@ -14,7 +14,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
         height = maxSecond
     }
 
-    fun updateChanceBoard(board: MutableMap<Pair<Int, Int>, Int>) : List<Pair<Int, Int>> {
+    fun updateChanceBoard(board: MutableMap<Pair<Int, Int>, Int>) {
         val result = mutableMapOf<Pair<Int, Int>, SolverCell>()
         var count = 0
         for (i in 0 until width) {
@@ -34,15 +34,14 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
         }
         //println("Осталость $count")
         chanceBoard = result
-        return updateChances()
+        updateChances()
     }
 
-    private fun updateChances(): List<Pair<Int, Int>> {
+    private fun updateChances() {
         updateSolverCells()
-        val list = setFlags()
+        setFlags()
         openNotBombsCells()
         findChance()
-        return list
     }
 
     private fun updateSolverCells() {
@@ -65,8 +64,7 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
         }
     }
 
-    private fun setFlags(): MutableList<Pair<Int, Int>> {
-        val list = mutableListOf<Pair<Int, Int>>()
+    private fun setFlags() {
         for (i in 0 until width) {
             for (j in 0 until height) {
                 val cell = chanceBoard[i to j]!!
@@ -75,14 +73,12 @@ class ChanceBoard (board: MutableMap<Pair<Int, Int>, Int>) {
                     for (around in neighbors) {
                         if (!chanceBoard[around]!!.isChecked()) {
                             chanceBoard[around]!!.setFlag()
-                            list.add(around)
                         }
                     }
                     updateSolverCells()
                 }
             }
         }
-        return list
     }
 
     private fun openNotBombsCells() {

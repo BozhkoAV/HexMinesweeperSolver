@@ -25,7 +25,6 @@ class Solver (width: Int, height: Int, bombs: Int) {
         if (firstMove) {
             randomMove()
             firstMove = false
-            return
         } else {
             move(bestMoveCoordinate())
         }
@@ -47,24 +46,25 @@ class Solver (width: Int, height: Int, bombs: Int) {
         return coordinate
     }
 
-    private fun move(currentCoordinate: Pair<Int, Int>){
+    private fun move(currentCoordinate: Pair<Int, Int>) {
         println("Ход: $currentCoordinate") // Для проверки
         board.openCells(currentCoordinate)
-        val list = chanceBoard.updateChanceBoard(board.getBoard())
-        //println("Флаги ${chanceBoard.getListOfFlag()}")  // Для проверки
-        if (chanceBoard.getListOfFlag().size == boardBombs) {
+        chanceBoard.updateChanceBoard(board.getBoard())
+        val list = chanceBoard.getListOfFlag()
+        //println("Флаги $list")  // Для проверки
+        if (list.size == boardBombs) {
             board.state = "win"
         }
         for (coordinate in list) {
             board.gameBoard[coordinate]!!.placeFlag()
         }
-        if (firstMove) {
-            //chanceBoard.print() // Для проверки
+        /*if (firstMove) {
+            chanceBoard.print() // Для проверки
             testChanceBoard = chanceBoard.getCurrentChanceBoard() // Для проверки
         } else {
-            //chanceBoard.print(testChanceBoard) // Для проверки
+            chanceBoard.print(testChanceBoard) // Для проверки
             testChanceBoard = chanceBoard.getCurrentChanceBoard() // Для проверки
-        }
+        }*/
     }
 
     private fun randomMove() = move((0 until boardWidth).random() to (0 until boardHeight).random())
